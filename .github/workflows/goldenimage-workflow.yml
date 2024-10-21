@@ -17,7 +17,9 @@ jobs:
         if: success()
         with:
           webhook: "https://discord.com/api/webhooks/1241737791730225163/Mb1z13aBZ8cvhbZEO9meBxVIAEn1ClzVgruJ9vVqGh6E6umlZ81gpim_s_7f1nRPdaiE"
+          nodetail: true
+          title: "New version of `software` is ready!"
           description: "Build and deploy to GitHub Pages"
           color: 5763719
           username: GitHub
-          avatar_url: "https://cdn-icons-png.flaticon.com/512/25/25231.png"
+          avatar_url: "https://cdn-icons-png.freepik.com/256/16021/16021236.png?semt=ais_hybrid"
