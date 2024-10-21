@@ -16,15 +16,15 @@ jobs:
         uses: discord-actions/message@v2
         with:
           webhookUrl: https://discord.com/api/webhooks/1241737791730225163/Mb1z13aBZ8cvhbZEO9meBxVIAEn1ClzVgruJ9vVqGh6E6umlZ81gpim_s_7f1nRPdaiE
-          message: "Hello, from Github"
+          message: "Hello, thats a success"
 
       - name: Notify Discord for fail
         if: ${{ always() && contains(needs.*.result, 'failure') }}
         uses: discord-actions/message@v2
         with:
           webhookUrl: https://discord.com/api/webhooks/1241737791730225163/Mb1z13aBZ8cvhbZEO9meBxVIAEn1ClzVgruJ9vVqGh6E6umlZ81gpim_s_7f1nRPdaiE
-          message: "Hello, from Github"
-          
+          message: "Hello, thats a fail"
+
       - name: Intentional Fail Step
         run: |
           echo "This task is designed to fail"
