@@ -11,13 +11,13 @@ jobs:
     runs-on: ubuntu-latest
     continue-on-error: false  
     steps:
-
-      - name: send message
-        uses: appleboy/discord-action@master
+      
+      - name: Notify Discord for success
+        uses: sarisia/actions-status-discord@v1
+        if: success()
         with:
-          webhook_id: "1241737791730225163"
-          webhook_token: "Mb1z13aBZ8cvhbZEO9meBxVIAEn1ClzVgruJ9vVqGh6E6umlZ81gpim_s_7f1nRPdaiE"
-          color: "#48f442"
-          username: "GitHub"
-          message: "workflow success."
-          file: "https://cdn-icons-png.flaticon.com/512/25/25231.png"
+          webhook: "https://discord.com/api/webhooks/1241737791730225163/Mb1z13aBZ8cvhbZEO9meBxVIAEn1ClzVgruJ9vVqGh6E6umlZ81gpim_s_7f1nRPdaiE"
+          description: "Build and deploy to GitHub Pages"
+          color: 5763719
+          username: GitHub
+          avatar_url: "https://cdn-icons-png.flaticon.com/512/25/25231.png"
