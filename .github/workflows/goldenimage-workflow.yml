@@ -1,0 +1,132 @@
+name: goldenimage Workflow
+on:
+  workflow_call:
+    inputs:
+      S3_BASE_PATH:
+        required: true
+        type: string
+      ROLE:
+        required: true
+        type: string
+      REGION:
+        required: true
+        type: string
+      CPU_ARCH:
+        required: true
+        type: string
+      OS:
+        required: true
+        type: string
+      APP:
+        required: true
+        type: string
+      TOOLKIT_VERSION:
+        required: true
+        type: string
+
+permissions:
+  id-token: write   # Required for requesting the JWT
+  contents: read    # Required for actions/checkout
+
+jobs:
+  Golden-Image:
+    runs-on: ubuntu-latest
+    continue-on-error: false
+    env:
+      IS_TEST: ${{ github.ref == 'refs/heads/test-workflow' }}
+      TAG_NAME: ${{ github.ref_name }}
+      REPO_NAME: ${{ github.event.repository.name }}
+      
+    steps:
+      - name: Determine Tag
+        if: ${{ github.ref_type == 'tag' || env.IS_TEST }}
+        run: "echo Triggered by tag: ${{ github.ref_name }}"
+
+      - name: Set S3_PATH Environment Variable
+        run: | 
+          echo "S3_PATH=${{ inputs.S3_BASE_PATH }}/ansible-${{ inputs.APP }}/${{ env.TAG_NAME }}" >> $GITHUB_ENV
+
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ inputs.ROLE }}
+          aws-region: ${{ inputs.REGION }}
+
+      - name: Install Packages
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y awscli packer    
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10' 
+      - run: pip install ansible
+
+      - name: Check and download requirements.yml if not found
+        run: |
+          REQUIREMENTS_YML="requirements.yml"
+          if [ ! -f "$REQUIREMENTS_YML" ]; then
+            echo "Local $REQUIREMENTS_YML not found. Downloading from URL..."
+            curl https://raw.githubusercontent.com/inqwise/ansible-automation-toolkit/default/requirements_amzn2023.yml -o $REQUIREMENTS_YML
+          fi
+
+      - name: Install Ansible roles and collections
+        run: | 
+          ansible-galaxy role install -r requirements.yml -p roles
+          ansible-galaxy collection install -r requirements.yml -p ./collections
+
+      - name: Install extra requirements if present
+        run: |
+          if [ -f "requirements_extra.yml" ]; then
+            echo "Found requirements_extra.yml ..."
+            ansible-galaxy role install -r requirements_extra.yml -p roles
+            ansible-galaxy collection install -r requirements_extra.yml -p ./collections
+          fi
+
+      - name: Remove existing requirements files if they exist
+        run: |
+          if [ -f "requirements.yml" ]; then
+            rm requirements.yml
+            echo "Removed requirements.yml"
+          fi
+          if [ -f "requirements_extra.yml" ]; then
+            rm requirements_extra.yml
+            echo "Removed requirements_extra.yml"
+          fi
+        
+      - name: Delete existing files from S3
+        if: ${{ env.TAG_NAME != '' }}
+        run: |
+          echo "Deleting files from ${{ env.S3_PATH }}/"
+          aws s3 rm ${{ env.S3_PATH }}/ --recursive
+
+      - name: Upload files to S3
+        run: |
+          echo "Uploading files to ${{ env.S3_PATH }}/"
+          aws s3 cp . ${{ env.S3_PATH }}/ --recursive --exclude ".*" --exclude ".*/**" --exclude "Vagrantfile*" --exclude "*.md"
+
+      - name: Install Packer Plugin for Amazon
+        run: |
+          curl -O https://raw.githubusercontent.com/inqwise/ansible-automation-toolkit/${{ inputs.TOOLKIT_VERSION }}/packer/goldenimage.pkr.hcl
+          packer init .
+
+      - name: Execute Packer Build
+        run: |
+          packer build --only=amazon-ebs.${{ inputs.OS }}_${{ inputs.CPU_ARCH }} -var cpu_arch=${{ inputs.CPU_ARCH }} -var 'tag=${{ env.TAG_NAME }}' -var app=${{ inputs.APP }} -var 'aws_region=${{ inputs.REGION }}' -var 'verbose=${{ env.IS_TEST }}' -var 'base_path=${{ inputs.S3_BASE_PATH }}' -var skip_remote_requirements=true goldenimage.pkr.hcl
+
+      - name: Notify Discord for success
+        if: success()
+        uses: discord-actions/message@v2
+        with:
+          webhookUrl: https://discord.com/api/webhooks/1241737791730225163/Mb1z13aBZ8cvhbZEO9meBxVIAEn1ClzVgruJ9vVqGh6E6umlZ81gpim_s_7f1nRPdaiE
+          message: "Hello, from Github"
+
+      - name: Notify Discord for fail
+        if: ${{ always() && contains(needs.*.result, 'failure') }}
+        uses: discord-actions/message@v2
+        with:
+          webhookUrl: https://discord.com/api/webhooks/1241737791730225163/Mb1z13aBZ8cvhbZEO9meBxVIAEn1ClzVgruJ9vVqGh6E6umlZ81gpim_s_7f1nRPdaiE
+          message: "Hello, from Github"
