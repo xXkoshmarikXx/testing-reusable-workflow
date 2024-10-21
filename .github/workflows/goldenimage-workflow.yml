@@ -32,10 +32,6 @@ jobs:
   Golden-Image:
     runs-on: ubuntu-latest
     continue-on-error: false
-    env:
-      IS_TEST: ${{ github.ref == 'refs/heads/test-workflow' }}
-      TAG_NAME: ${{ github.ref_name }}
-      REPO_NAME: ${{ github.event.repository.name }}
       
     steps:
       - name: Determine Tag
