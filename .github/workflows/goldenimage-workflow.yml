@@ -24,3 +24,8 @@ jobs:
         with:
           webhookUrl: https://discord.com/api/webhooks/1241737791730225163/Mb1z13aBZ8cvhbZEO9meBxVIAEn1ClzVgruJ9vVqGh6E6umlZ81gpim_s_7f1nRPdaiE
           message: "Hello, from Github"
+          
+      - name: Intentional Fail Step
+        run: |
+          echo "This task is designed to fail"
+          exit 1  # This command causes the step to fail with a non-zero exit code.
