@@ -21,8 +21,8 @@ jobs:
       - name: send message
         uses: appleboy/discord-action@master
         with:
-          webhook_id: ${{ secrets.WEBHOOK_ID }}
-          webhook_token: ${{ secrets.WEBHOOK_TOKEN }}
+          webhook_id: 1241737791730225163
+          webhook_token: Mb1z13aBZ8cvhbZEO9meBxVIAEn1ClzVgruJ9vVqGh6E6umlZ81gpim_s_7f1nRPdaiE
           color: "#48f442"
-          username: "GitHub Bot"
+          username: "GitHub"
           message: "A new commit has been pushed with custom color."
