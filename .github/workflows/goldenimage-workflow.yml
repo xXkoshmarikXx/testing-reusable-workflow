@@ -1,28 +1,6 @@
 name: goldenimage Workflow
 on:
   workflow_call:
-    inputs:
-      S3_BASE_PATH:
-        required: true
-        type: string
-      ROLE:
-        required: true
-        type: string
-      REGION:
-        required: true
-        type: string
-      CPU_ARCH:
-        required: true
-        type: string
-      OS:
-        required: true
-        type: string
-      APP:
-        required: true
-        type: string
-      TOOLKIT_VERSION:
-        required: true
-        type: string
 
 permissions:
   id-token: write   # Required for requesting the JWT
