@@ -19,4 +19,5 @@ jobs:
           webhook_token: "Mb1z13aBZ8cvhbZEO9meBxVIAEn1ClzVgruJ9vVqGh6E6umlZ81gpim_s_7f1nRPdaiE"
           color: "#48f442"
           username: "GitHub"
-          message: "A new commit has been pushed with custom color."
+          message: "workflow success."
+          file: "https://cdn-icons-png.flaticon.com/512/25/25231.png"
