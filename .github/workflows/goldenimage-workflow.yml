@@ -16,16 +16,13 @@ jobs:
         uses: discord-actions/message@v2
         with:
           webhookUrl: https://discord.com/api/webhooks/1241737791730225163/Mb1z13aBZ8cvhbZEO9meBxVIAEn1ClzVgruJ9vVqGh6E6umlZ81gpim_s_7f1nRPdaiE
-          message: "Hello, thats a success"
+          message: "Hello, thats a success" 
 
-      - name: Notify Discord for fail
-        if: ${{ always() && contains(needs.*.result, 'failure') }}
-        uses: discord-actions/message@v2
+      - name: send message
+        uses: appleboy/discord-action@master
         with:
-          webhookUrl: https://discord.com/api/webhooks/1241737791730225163/Mb1z13aBZ8cvhbZEO9meBxVIAEn1ClzVgruJ9vVqGh6E6umlZ81gpim_s_7f1nRPdaiE
-          message: "Hello, thats a fail"
-
-      - name: Fail Task
-        run: |
-          echo "This task is designed to fail"
-          exit 1  # This will cause the step to fail      
+          webhook_id: ${{ secrets.WEBHOOK_ID }}
+          webhook_token: ${{ secrets.WEBHOOK_TOKEN }}
+          color: "#48f442"
+          username: "GitHub Bot"
+          message: "A new commit has been pushed with custom color."
