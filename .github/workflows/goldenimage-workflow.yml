@@ -11,11 +11,6 @@ jobs:
     runs-on: ubuntu-latest
     continue-on-error: false  
     steps:
-      - name: Fail Task
-        run: |
-          echo "This task is designed to fail"
-          exit 1  # This will cause the step to fail
-
       - name: Notify Discord for success
         if: success()
         uses: discord-actions/message@v2
@@ -29,3 +24,8 @@ jobs:
         with:
           webhookUrl: https://discord.com/api/webhooks/1241737791730225163/Mb1z13aBZ8cvhbZEO9meBxVIAEn1ClzVgruJ9vVqGh6E6umlZ81gpim_s_7f1nRPdaiE
           message: "Hello, thats a fail"
+
+      - name: Fail Task
+        run: |
+          echo "This task is designed to fail"
+          exit 1  # This will cause the step to fail      
