@@ -23,8 +23,8 @@ jobs:
         with:
           webhook: "https://discord.com/api/webhooks/1241737791730225163/Mb1z13aBZ8cvhbZEO9meBxVIAEn1ClzVgruJ9vVqGh6E6umlZ81gpim_s_7f1nRPdaiE"
           nodetail: true
-          title: "New AMI was created on ${{ inputs.PROJECT }}-${{ inputs.APP }}"
-          description: "Workflow finished successfuly"
+          title: "Workflow finished successfuly"
+          description: "New AMI was created on ${{ inputs.PROJECT }}-${{ inputs.APP }}"
           color: 5763719
           username: GitHub
           avatar_url: "https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png"
