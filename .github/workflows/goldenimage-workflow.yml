@@ -1,7 +1,6 @@
 name: goldenimage Workflow
 on:
   workflow_call:
-
       APP:
         required: true
         type: string
