@@ -8,6 +8,9 @@ on:
       WEBHOOK_URL:
         required: true
         type: string
+      REGION:
+        required: true
+        type: string
 
 permissions:
   id-token: write   # Required for requesting the JWT
@@ -27,6 +30,6 @@ jobs:
           avatar_url: "https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png"
           username: "${{ inputs.APP }} goldenimage workflow"
           content: "Success"
-          title: "New AMI was created on ${{ inputs.APP }}"
-          description: "Workflow finished successfuly"
+          description: "Workflow finished successfuly on ${{ inputs.APP }}"
+          title: "New AMI was created on ${{ inputs.REGION }}"
           color: 5763719
