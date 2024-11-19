@@ -24,7 +24,7 @@ jobs:
           echo "REGION: ${{ inputs.REGION }}"
 
       - name: Notify Discord for success
-        uses: sarisia/actions-status-discord@latest
+        uses: sarisia/actions-status-discord@v1.15.0
         if: success()
         with:
           nodetail: true
