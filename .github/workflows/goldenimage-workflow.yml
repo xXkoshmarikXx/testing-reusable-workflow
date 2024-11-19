@@ -12,10 +12,6 @@ on:
         required: true
         type: string
 
-permissions:
-  id-token: write   # Required for requesting the JWT
-  contents: read    # Required for actions/checkout
-
 jobs:
   Golden-Image:
     runs-on: ubuntu-latest
@@ -26,10 +22,10 @@ jobs:
         if: success()
         with:
           nodetail: true
-          webhook: "${{ inputs.WEBHOOK_URL }}"
-          avatar_url: "https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png"
-          username: "${{ inputs.APP }} goldenimage workflow"
-          content: "Success"
-          description: "Workflow finished successfuly"
-          title: "New AMI was created on ${{ inputs.REGION }}"
+          webhook: ${{ inputs.WEBHOOK_URL }}
+          avatar_url: https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png
+          username: ${{ inputs.APP }} goldenimage workflow
+          content: Success
+          description: Workflow finished successfuly
+          title: New AMI was created on ${{ inputs.REGION }}
           color: 5763719
