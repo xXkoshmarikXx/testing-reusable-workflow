@@ -28,7 +28,7 @@ jobs:
         if: success()
         with:
           nodetail: true
-          webhook: ${{ inputs.WEBHOOK_URL }}
+          webhook: ${{ vars.WEBHOOK_URL }}
           avatar_url: https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png
           username: ${{ inputs.APP }}
           content: Success goldenimage workflow
