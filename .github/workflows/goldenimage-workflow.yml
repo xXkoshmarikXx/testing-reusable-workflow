@@ -21,6 +21,7 @@ jobs:
         run: |
           echo "APP: ${{ inputs.APP }}"
           echo "REGION: ${{ inputs.REGION }}"
+          echo "WEBHOOK_URL: ${{ vars.WEBHOOK_URL }}"
 
       - name: Notify Discord for success
         uses: sarisia/actions-status-discord@v1.15.0
