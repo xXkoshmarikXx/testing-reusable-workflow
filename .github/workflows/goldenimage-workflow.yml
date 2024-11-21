@@ -23,6 +23,34 @@ jobs:
           echo "REGION: ${{ inputs.REGION }}"
           echo "WEBHOOK_URL: ${{ vars.WEBHOOK_URL }}"
 
+      # Check if the JSON file exists
+      - name: Check for goldenimage_result.json
+        id: check-file
+        run: |
+          if [[ -f "goldenimage_result.json" ]]; then
+            echo "File goldenimage_result.json exists."
+          else
+            echo "File goldenimage_result.json does not exist."
+            exit 1
+          fi
+
+      # Load parameters from JSON file
+      - name: Load parameters from goldenimage_result.json
+        id: load-parameters
+        run: |
+          echo "Loading parameters from goldenimage_result.json..."
+          
+          # Parse JSON and export as environment variables
+          while IFS="=" read -r key value; do
+            echo "$key=$value" >> $GITHUB_ENV
+          done < <(jq -r "to_entries|map(\"\(.key)=\(.value|tostring)\")|.[]" goldenimage_result.json)
+
+      # Use the loaded variables
+      - name: Use loaded parameters
+        run: |
+          echo "Using loaded variables:"
+          echo "AMI: $ami"
+
       - name: Notify Discord for success
         uses: sarisia/actions-status-discord@v1.15.0
         if: success() && vars.WEBHOOK_URL != ''
