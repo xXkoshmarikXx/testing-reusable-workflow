@@ -1,0 +1,12 @@
+{
+    "timestamp": "2024-11-20T12:34:56Z",
+    "all_amis": {
+      "us-east-1": "ami-0123456789abcdef0",
+      "us-west-2": "ami-0fedcba9876543210"
+    },
+    "app": "web-application",
+    "profile": "production-profile",
+    "region": "us-east-1",
+    "version": "v1.2.3",
+    "ami": "ami-0123456789abcdef0"
+}
